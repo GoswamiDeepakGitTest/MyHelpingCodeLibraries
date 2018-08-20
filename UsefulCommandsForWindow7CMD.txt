@@ -1,0 +1,11 @@
+Grant permission to users for a directory using command line in Windows 
+This is how you grant Deepak-PC full control over E:/CustomDrive/htdocs/TruckingPayroll/static/uploads/PDF folder and all its subfolders:
+icacls "E:/CustomDrive/htdocs/TruckingPayroll/static/uploads/PDF" /grant Deepak-PC:(OI)(CI)F /T
+
+Open CMD as administrator and run the above command;
+According do MS documentation:
+
+F = Full Control
+CI = Container Inherit - This flag indicates that subordinate containers will inherit this ACE.
+OI = Object Inherit - This flag indicates that subordinate files will inherit the ACE.
+/T = Apply recursively to existing files and sub-folders. (OI and CI only apply to new files and sub-folders). Credit: comment by @AlexSpence.

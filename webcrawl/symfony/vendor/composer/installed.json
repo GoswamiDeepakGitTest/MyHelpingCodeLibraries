@@ -1,0 +1,176 @@
+[
+    {
+        "name": "symfony/css-selector",
+        "version": "v3.4.6",
+        "version_normalized": "3.4.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/css-selector.git",
+            "reference": "544655f1fc078a9cd839fdda2b7b1e64627c826a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/css-selector/zipball/544655f1fc078a9cd839fdda2b7b1e64627c826a",
+            "reference": "544655f1fc078a9cd839fdda2b7b1e64627c826a",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2018-02-03T14:55:07+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\CssSelector\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jean-François Simon",
+                "email": "jeanfrancois.simon@sensiolabs.com"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony CssSelector Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "symfony/dom-crawler",
+        "version": "v3.4.6",
+        "version_normalized": "3.4.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/dom-crawler.git",
+            "reference": "2bb5d3101cc01f4fe580e536daf4f1959bc2d24d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/2bb5d3101cc01f4fe580e536daf4f1959bc2d24d",
+            "reference": "2bb5d3101cc01f4fe580e536daf4f1959bc2d24d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8",
+            "symfony/polyfill-mbstring": "~1.0"
+        },
+        "require-dev": {
+            "symfony/css-selector": "~2.8|~3.0|~4.0"
+        },
+        "suggest": {
+            "symfony/css-selector": ""
+        },
+        "time": "2018-02-22T10:48:49+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\DomCrawler\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony DomCrawler Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.7.0",
+        "version_normalized": "1.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-mbstring.git",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "ext-mbstring": "For best performance"
+        },
+        "time": "2018-01-30T19:27:44+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Mbstring\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill for the Mbstring extension",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "mbstring",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    }
+]

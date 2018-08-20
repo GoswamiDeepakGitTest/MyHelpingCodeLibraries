@@ -1,0 +1,230 @@
+Usefull Commands:
+
+Window CMD:
+
+Download a zip/file from the commandline using curl
+curl -o trucking_mileage_bak_11June2018.zip http://jandsdev.com/trucking_mileage_bak_11June2018.zip
+
+
+
+
+AWS ubuntu linux server commands:
+1) Backing up your databases using ssh command with in current directory you are on ubuntu. (Run out side mysql> I mean on ssh window directly without login to mysql )
+
+To backup "trucking_mileage" db use below command.
+> mysqldump -u dbuserName -p  databaseName > "/home/trucking/www/dbFilename.sql"
+mysqldump -u trucking_mileage -p  trucking_vts > "/home/trucking/www/trucking_vts.sql"
+
+2) Import DATABASE ON AWS Server:
+mysql -u root -p trucking_mileage< trucking_mileage_bak_11June2018.sql
+User:root
+Password:64Qem12!123
+
+3) How do I use zip command to compress a folder?
+
+The syntax is
+zip -r filename.zip folder
+zip -r filename.zip folder1 folder2
+zip -r filename.zip /path/to/folder1 /path/to/file2
+
+-r	recurse into directories
+
+How to zip the database sql file.
+zip -r /home/trucking/www/trucking_mileage_bak_11June2018.zip /home/trucking/www/trucking_mileage_bak_11June2018.sql
+
+4) Unzip:
+unzip trucking_mileage_bak_11June2018.zip
+
+5) Executing the above command would delete all files and directories within the directory
+rm -rf aedxm
+
+Remove File.
+rm aedxm.tar.gz
+
+Clean Dir:Remove all files from a directory.
+rm /var/www/html/www/mileage/application/logs/*
+
+6) Move files from one folder to another with same name ?
+
+mv /path_to_source_folder/filename /path_to_destination_folder/
+
+mv /var/www/html/www/mileage /var/www/html
+7) See list of all process
+ps aux
+Or
+ps aux | grep SocketServer.php
+ps aux|grep php  // show all php process running
+
+7) Set up server defualt timezone as per required from commnad line in ubuntu:
+
+ubuntu@ip-172-31-43-130:~$ sudo timedatectl set-timezone America/New_York
+ubuntu@ip-172-31-43-130:~$ sudo service apache2 restart
+ubuntu@ip-172-31-43-130:~$ sudo service mysql restart
+ubuntu@ip-172-31-43-130:~$ date
+Tue Jun 12 02:04:18 EDT 2018
+
+
+/*//Set timezone as EST:
+$ sudo timedatectl set-timezone EST
+
+//Set timezone as UTC:
+$ sudo timedatectl set-timezone UTC
+
+//List all timezones:
+$ timedatectl list-timezones
+
+And then Restarts apche ubuntu
+$ sudo service apache2 restart
+
+Resatrt mysql:
+sudo service mysql restart
+or
+sudo restart mysql*/
+
+8)CodeIgniter removing index.php from url: "AllowOverride All" in apache2.conf solved the problem for me, as .htaccess filles are not used by default.
+
+
+Allow overriding htaccess in Apache Configuration (Command)
+
+$ sudo nano /etc/apache2/apache2.conf
+
+and edit the file & change to
+
+AllowOverride All
+
+for www folder
+
+Then Resatrt the apche server
+sudo service apache2 restart
+
+This allow .htaccess file to be read for running below code to remove index.php from url.
+Step 1 :
+
+Add this in htaccess file
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    #RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+	Options -Indexes
+</IfModule>
+
+Step 2 :
+Remove index.php in codeigniter config
+$config['base_url'] = '';
+$config['index_page'] = '';
+
+9) Enable mod_rewrite
+In order to use mod_rewrite you can type the following command in the terminal:
+
+sudo a2enmod rewrite
+
+Restart apache2 after
+
+
+Restart Apache
+sudo service apache2 restart
+
+
+Then, if you'd like, you can use the following .htaccess file.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>
+
+
+10) Fix mysqli group issue(i.e. clause; this is incompatible with sql_mode=only_full_group_by) on new aws server with updated php and mysql version
+steps to success:
+sudo nano /etc/mysql/conf.d/mysql.cnf
+
+Scroll to the bottom of file Copy and paste
+[mysqld]
+sql-mode="NO_ENGINE_SUBSTITUTION"
+
+
+11) Fixed PHPEXcel Export not working  and giving "This site can’t be reached" error message in php 7.0
+TO fix this I have commented :
+PHP 7.0 and higher, a break statement is no longer permitted outside a for, foreach or switch statement and gives a fatal error.
+ I was able to fix the problem by commenting out the (useless) break statement in the offending .php file.
+ /var/www/html/application/third_party/phpExcel/Classes/PHPExcel/Calculation/Functions.php
+Line 581, commented that unused break.
+
+And also Fixed  " Uncaught Error: Class 'ZipArchive' not found in /var/www/html/application/third..."
+By installing php7 zip package from ssh;
+$ sudo apt-get install php7.0-zip
+And then restart apache
+$ sudo service apache2 restart
+
+
+12) Give 0777 permission to PDF and companylogo for send pdf notification by email
+chmod 0777 /var/www/html/static/uploads/PDF/*
+chmod 0777 /var/www/html/static/uploads/companyLogo/*
+ chmod 0777 /var/www/html/static/uploads/InvoicePDF
+
+
+13)Installed missing packages on AWS server like:
+php7-curl
+php7-mbstring
+php7-Bz2
+php7-bcmath
+sudo apt-get install php7.0-bz2
+sudo apt-get install php7.0-curl
+sudo apt-get install php7.0-mbstring
+
+sudo apt-get install php7.0-gd
+sudo service apache2 restart
+
+
+------------------------------------------
+Linux RHEL Commands
+
+How to Extract a tar.gz file on Linux RHEL 6
+tar -xzvf aedxm.tar.gz
+
+Change Permision of file.
+chmod 0777 aedxm.tar.gz
+
+Change Permision of folder.
+chmod 0777 aedxm
+chmod 0777 /var/www/html/static/uploads/companyLogo/*
+chmod 0777 /var/www/html/static/uploads/*
+
+//chmod 777 all subfolders of /var/www/html/static/uploads?
+sudo chmod -R 777 /var/www/html/static/uploads
+
+Download file by URL on Server
+wget https://aedims.com/cron/cronSendNotificationReportsByDatabase
+wget http://test.aedims.com/index.php
+
+I've named that service ws_socketserver.service and you can start, stop or restart it with:
+
+systemctl start ws_socketserver.service
+systemctl stop ws_socketserver.service
+systemctl restart ws_socketserver.service
+
+and you can check if it is running or not with:
+
+systemctl status ws_socketserver.service
+
+or
+
+ps faux | grep -i ws_   (the output of this should looks something like:
+
+
+Restarts apche redhat RHEL
+systemctl restart httpd.service
+
+
+
+Delete folder in window 7
+del /f C:\xampp\htdocs\TruckingMileageDev
+del /f C:\xampp\htdocs\TruckingMileageDev\.git\objects\pack\tmp_pack_NFVb7d
+del /f /s /q TruckingMileageDev\null
+del /f /s /q TruckingMileageDev
+rd /s /q dirpath

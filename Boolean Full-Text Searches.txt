@@ -1,0 +1,82 @@
+Boolean Full-Text Searches
+
+SELECT * FROM articles WHERE MATCH (title,body) -> AGAINST ('+MySQL -YourSQL' IN BOOLEAN MODE)
+
+ In implementing this feature, MySQL uses what is sometimes referred to as implied Boolean logic, in which
+
+    + stands for AND
+
+    - stands for NOT
+
+    [no operator] implies OR 
+
+MATCH (col1,col2,...) AGAINST (expr [search_modifier])
+
+
+ MySQL has support for full-text indexing and searching:
+
+    A full-text index in MySQL is an index of type FULLTEXT.
+
+    Full-text indexes can be used only with InnoDB or MyISAM tables, and can be created only for CHAR, VARCHAR, or TEXT columns.
+
+    A FULLTEXT index definition can be given in the CREATE TABLE statement when a table is created, or added later using ALTER TABLE or CREATE INDEX.
+
+    For large data sets, it is much faster to load your data into a table that has no FULLTEXT index and then create the index after that, than to load data into a table that has an existing FULLTEXT index. 
+	
+Full-text searching is performed using MATCH() ... AGAINST syntax. MATCH() takes a comma-separated list that names the columns to be searched. AGAINST takes a string to search for, and an optional modifier that indicates what type of search to perform. The search string must be a string value that is constant during query evaluation. This rules out, for example, a table column because that can differ for each row. 
+
+
+ There are three types of full-text searches:
+
+1)  A natural language search interprets the search string as a phrase in natural human language (a phrase in free text). There are no special operators, with the exception of double quote (") characters. The stopword list applies. For more information about stopword lists, see Section 12.9.4, “Full-Text Stopwords”.
+
+ Full-text searches are natural language searches if the IN NATURAL LANGUAGE MODE modifier is given or if no modifier is given. For more information, see Section 12.9.1, “Natural Language Full-Text Searches”.
+
+ 
+ Example:
+ mysql> CREATE TABLE articles (
+          id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+          title VARCHAR(200),
+          body TEXT,
+          FULLTEXT (title,body)
+        ) ENGINE=InnoDB;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO articles (title,body) VALUES
+        ('MySQL Tutorial','DBMS stands for DataBase ...'),
+        ('How To Use MySQL Well','After you went through a ...'),
+        ('Optimizing MySQL','In this tutorial we will show ...'),
+        ('1001 MySQL Tricks','1. Never run mysqld as root. 2. ...'),
+        ('MySQL vs. YourSQL','In the following database comparison ...'),
+        ('MySQL Security','When configured properly, MySQL ...');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM articles
+        WHERE MATCH (title,body)
+        AGAINST ('database' IN NATURAL LANGUAGE MODE);
++----+-------------------+------------------------------------------+
+| id | title             | body                                     |
++----+-------------------+------------------------------------------+
+|  1 | MySQL Tutorial    | DBMS stands for DataBase ...             |
+|  5 | MySQL vs. YourSQL | In the following database comparison ... |
++----+-------------------+------------------------------------------+
+2 rows in set (0.00 sec)
+
+NOTE:
+By default, the search is performed in case-insensitive fashion. To perform a case-sensitive full-text search, use a binary collation for the indexed columns. For example, a column that uses the latin1 character set of can be assigned a collation of latin1_bin to make it case-sensitive for full-text searches. 
+
+When MATCH() is used in a WHERE clause, as in the example shown earlier, the rows returned are automatically sorted with the highest relevance first. Relevance values are nonnegative floating-point numbers. Zero relevance means no similarity. Relevance is computed based on the number of words in the row (document), the number of unique words in the row, the total number of words in the collection, and the number of rows that contain a particular word. 
+The term “document” may be used interchangeably with the term “row”, and both terms refer to the indexed part of the row. The term “collection” refers to the indexed columns and encompasses all rows. 
+
+Ref: https://dev.mysql.com/doc/refman/5.6/en/fulltext-natural-language.html
+https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+https://stackoverflow.com/questions/6259647/mysql-match-against-order-by-relevance-and-column
+ 
+2)  A boolean search interprets the search string using the rules of a special query language. The string contains the words to search for. It can also contain operators that specify requirements such that a word must be present or absent in matching rows, or that it should be weighted higher or lower than usual. Certain common words (stopwords) are omitted from the search index and do not match if present in the search string. The IN BOOLEAN MODE modifier specifies a boolean search. For more information, see Section 12.9.2, “Boolean Full-Text Searches”.
+
+3) A query expansion search is a modification of a natural language search. The search string is used to perform a natural language search. Then words from the most relevant rows returned by the search are added to the search string and the search is done again. The query returns the rows from the second search. The IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION or WITH QUERY EXPANSION modifier specifies a query expansion search. For more information, see Section 12.9.3, “Full-Text Searches with Query Expansion”. 
+
+
+
+https://dev.mysql.com/doc/refman/5.6/en/fulltext-search.html#function_match
